@@ -1,5 +1,5 @@
 from library import app
-from library.db import Sql
+from library.model import Model
 from flask import render_template, request
 
 username = "username"
@@ -9,10 +9,13 @@ password = "password"
 def login():
     error = False
     if request.method == 'POST':
-        sql = Sql()
+        sql = Model()
         username = request.form['username']
         password = request.form['password']
+        # print(sql.get_all("show tables"))
+        sql.connect()
         result = sql.get_one("select * from user where id = %s and pwd = %s",(username,password))
+        # print(result)
         if result == None:
             error = True 
         else:

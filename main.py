@@ -1,18 +1,16 @@
 import toml
-import library
+from library import app
 
 config = toml.load("config.toml")
 
-library.init_db(
-    host=config["db"]["host"],
-    port=config["db"]["port"],
-    username=config["db"]["username"],
-    password=config["db"]["password"],
-    database=config["db"]["database"],
-)
+app.config["host"]=config["db"]["host"]
+app.config["port"]=config["db"]["port"]
+app.config["username"]=config["db"]["username"]
+app.config["password"]=config["db"]["password"]
+app.config["database"]=config["db"]["database"]
 
 if __name__ == "__main__":
-    library.app.run(
+    app.run(
         host="0.0.0.0",
         port="9003",
         debug=True
