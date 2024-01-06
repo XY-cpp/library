@@ -2,6 +2,8 @@
 
 ## 项目架构
 
+[前端文档](https://boomerang.bootmb.com)
+
 参考了flask官方的架构
 ```
 /home/user/Projects/flask-tutorial
