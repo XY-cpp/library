@@ -18,4 +18,4 @@ def auth_login():
         else:
             session["id"]=request.form["username"]
             return redirect("/home")
-    return render_template("auth/login.html", info=info)
+    return render_template("auth/index.html", info=info)
