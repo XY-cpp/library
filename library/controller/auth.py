@@ -19,3 +19,8 @@ def auth_login():
             session["id"]=request.form["username"]
             return redirect("/home")
     return render_template("auth/index.html", info=info)
+
+@app.route("/logout")
+def auth_logout():
+    session.clear()
+    return redirect("/login?info=quit")
