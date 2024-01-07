@@ -52,7 +52,7 @@ class Model:
 
 
 class User(Model):
-    def __init__(self,username):
+    def __init__(self, username):
         self.id = username
 
     def login(self, password):
@@ -62,5 +62,5 @@ class User(Model):
         return result != None
 
     def is_admin(self):
-        result = self.get_one("select * from user where id=%s and admin=1",(self.id))
+        result = self.get_one("select * from user where id=%s and admin=1", (self.id))
         return result != None
