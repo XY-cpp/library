@@ -49,3 +49,18 @@ class Model:
         except Exception as e:
             print(e)
         return count
+
+
+class User(Model):
+    def __init__(self,username):
+        self.id = username
+
+    def login(self, password):
+        result = self.get_one(
+            "select * from user where id=%s and pwd=%s", (self.id, password)
+        )
+        return result != None
+
+    def is_admin(self):
+        result = self.get_one("select * from user where id=%s and admin=1",(self.id))
+        return result != None
