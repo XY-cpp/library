@@ -13,6 +13,8 @@ def auth_index():
 
 @app.route("/login", methods=["GET", "POST"])
 def auth_login():
+    if session.get("id"):
+        return redirect("home")
     info = request.args.get("info", "")
     if request.method == "POST":
         sql = User(request.form["username"])
