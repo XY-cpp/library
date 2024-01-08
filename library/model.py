@@ -53,14 +53,26 @@ class Model:
 
 class User(Model):
     def __init__(self, username):
-        self.id = username
+        self.username = username
 
     def login(self, password):
         result = self.get_one(
-            "select * from user where id=%s and pwd=%s", (self.id, password)
+            "select * from user where username=%s and password=%s",
+            (self.username, password),
         )
         return result != None
 
     def is_admin(self):
-        result = self.get_one("select * from user where id=%s and admin=1", (self.id))
+        result = self.get_one(
+            "select * from user where username=%s and admin=1", (self.username)
+        )
         return result != None
+
+    def name(self):
+        result = self.get_one(
+            "select name from user where username=%s", (self.username)
+        )
+        if result[0] is None:
+            return self.username
+        else:
+            return result[0]
