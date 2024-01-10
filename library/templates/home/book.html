@@ -11,11 +11,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar_example_1">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">主页</a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link" href="/home/book">图书查询</a>
+                <a class="nav-link" href=/home>主页</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">图书查询</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">个人中心</a>
@@ -28,10 +28,30 @@
         </ul>
     </div>
 </nav>
-<div class="center-block" style="padding: 200px 200px;">
-    <h3 class="text-center">读者{{name}}，你好！</h3>
-    <h3 class="text-center" style="margin-top:70px;">当前共有{<$bookNum>}本图书</h3>
-    <h3 class="text-center">你已借{<$borrowBookNum>}本书</h3>
-    <h3 class="text-center">已超期{<$outDateBook>}本书</h3>
+<div style="place-items: center;">
+    <table class="table table-hover align-items-center">
+        <thead>
+            <tr>
+                <th scope="col">书名</th>
+                <th scope="col">作者</th>
+                <th scope="col">出版商</th>
+                <th scope="col">可借阅数</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr class="table-default" onclick="window.location.href='page'" scope="row">
+                <td>{{ book.name }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.press }}</td>
+                <td>{{ book.number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center">
+        {{ pagination.links }}
+    </div>
 </div>
+
 {% endblock %}

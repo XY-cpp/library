@@ -64,15 +64,31 @@ class User(Model):
 
     def is_admin(self):
         result = self.get_one(
-            "select * from user where username=%s and admin=1", (self.username)
+            "select * from user where username=%s and admin=1", self.username
         )
         return result != None
 
     def name(self):
-        result = self.get_one(
-            "select name from user where username=%s", (self.username)
-        )
+        result = self.get_one("select name from user where username=%s", self.username)
         if result[0] is None:
             return self.username
         else:
             return result[0]
+
+
+class BookInfo(Model):
+    def __init__(self, id):
+        self.info = list(self.get_one("select * from book_info where id=%s", id))
+        self.id = self.info[0]
+        self.name = self.info[1]
+        self.author = self.info[2]
+        self.press = self.info[3]
+        self.isbn = self.info[4]
+        self.press_time = self.info[5]
+        self.number = self.info[6]
+        self.manger = self.info[7]
+
+    @staticmethod
+    def total_books():
+        model = Model()
+        return model.get_one("select count(*) from book_info")[0]
