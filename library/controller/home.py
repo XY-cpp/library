@@ -1,5 +1,5 @@
 from library import app
-from library.model import User, Icp
+from library.model import User, Icp, BookStatus
 from flask import render_template, session, redirect, request
 from flask_paginate import get_page_parameter, Pagination
 
@@ -30,6 +30,24 @@ def home_book():
 
     start = (page - 1) * per_page + 1
     end = start + per_page
-    books = [Icp(i) for i in range(start, end)]
-
-    return render_template("home/book.html", books=books, pagination=pagination)
+    icp_list = []
+    info_list = []
+    for id in range(start, end):
+        icp = Icp(id)
+        icp_list.append(icp)
+        info = [
+            ("书名", icp.name),
+            ("作者", icp.author),
+            ("出版商", icp.press),
+            ("ISBN", icp.isbn),
+            ("出版日期", icp.press_time),
+            ("经办人", icp.manger),
+        ]
+        info_list.append(info)
+    return render_template(
+        "home/book.html",
+        zip=zip,
+        icp_list=icp_list,
+        info_list=info_list,
+        pagination=pagination,
+    )
