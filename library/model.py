@@ -76,19 +76,19 @@ class User(Model):
             return result[0]
 
 
-class BookInfo(Model):
+class Icp(Model):
     def __init__(self, id):
-        self.info = list(self.get_one("select * from book_info where id=%s", id))
-        self.id = self.info[0]
-        self.name = self.info[1]
-        self.author = self.info[2]
-        self.press = self.info[3]
-        self.isbn = self.info[4]
-        self.press_time = self.info[5]
-        self.number = self.info[6]
-        self.manger = self.info[7]
+        info = list(self.get_one("select * from icp where id=%s", id))
+        self.id = info[0]
+        self.name = info[1]
+        self.author = info[2]
+        self.press = info[3]
+        self.isbn = info[4]
+        self.press_time = info[5]
+        self.number = info[6]
+        self.manger = info[7]
 
     @staticmethod
     def total_books():
         model = Model()
-        return model.get_one("select count(*) from book_info")[0]
+        return model.get_one("select count(*) from icp")[0]

@@ -31,9 +31,9 @@ values
 -- 
 -- 创建图书信息表
 -- 
-drop table if exists `book_info`;
+drop table if exists `icp`;
 
-create table `book_info`(
+create table `icp`(
   `id` int auto_increment primary key,
   `name` char(128) not null,
   `author` char(128) default null,
@@ -47,7 +47,7 @@ create table `book_info`(
 -- 
 -- 导入图书信息数据
 -- 
-insert into `book_info` (`name`,`author`,`press`,`isbn`,`press_time`,`number`,`manager`)
+insert into `icp` (`name`,`author`,`press`,`isbn`,`press_time`,`number`,`manager`)
 values
   ("追风筝的人","[美]卡勒德·胡赛尼","上海人民出版社","9787208061644","2006-5",4,2),
   ("解忧杂货店","[日]东野圭吾","南海出版公司","9787544270878","2014-5",4,3),
@@ -73,9 +73,9 @@ values
 -- 
 -- 创建图书状态表
 -- 
-drop table if exists `book_status`;
+drop table if exists `book`;
 
-create table `book_status`(
+create table `book`(
   `id` int auto_increment primary key,
   `isbn` char(128) not null,
   `location` char(128) ,
@@ -85,7 +85,7 @@ create table `book_status`(
 -- 
 -- 导入图书状态数据
 -- 
-insert into `book_status` (`isbn`)
+insert into `book` (`isbn`)
 with recursive t(n) as (
   select 1
   union all
@@ -93,11 +93,11 @@ with recursive t(n) as (
   from t 
   where n<(
     select max(`number`)
-    from `book_info`
+    from `icp`
     lock in share mode 
   )
 ) 
 select `isbn`
-from `book_info`
+from `icp`
 cross join t
-where t.n <= `book_info`.`number`;
+where t.n <= `icp`.`number`;
