@@ -6,17 +6,17 @@ from flask_paginate import get_page_parameter, Pagination
 
 @app.route("/home", methods=["GET", "POST"])
 def home_index():
-    username = session.get("username")
-    if username is None:
+    user_id = session.get("user_id")
+    if user_id is None:
         return redirect("/login?info=noid")
-    user = User(username)
-    return render_template("home/index.html", name=user.name())
+    user = User(user_id)
+    return render_template("home/index.html", name=user.name)
 
 
 @app.route("/home/book")
 def home_book():
-    username = session.get("username")
-    if username is None:
+    user_id = session.get("user_id")
+    if user_id is None:
         return redirect("/login?info=noid")
     page = request.args.get(get_page_parameter(), type=int, default=1)
     per_page = 10

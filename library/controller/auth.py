@@ -5,7 +5,8 @@ from flask import render_template, request, redirect, session
 
 @app.route("/")
 def auth_index():
-    if session.get("username"):
+    print(session.get("user_id"))
+    if session.get("user_id"):
         return redirect("/home")
     else:
         return redirect("/login")
@@ -13,16 +14,16 @@ def auth_index():
 
 @app.route("/login", methods=["GET", "POST"])
 def auth_login():
-    if session.get("username"):
+    if session.get("user_id"):
         return redirect("home")
     info = request.args.get("info", "")
     if request.method == "POST":
-        sql = User(request.form["username"])
-        if not sql.login(request.form["password"]):
-            info = "error"
-        else:
-            session["username"] = request.form["username"]
+        user_id = User.login(request.form["username"], request.form["password"])
+        if user_id :
+            session["user_id"] = user_id
             return redirect("/home")
+        else:
+            info = "error"
     return render_template("auth/index.html", info=info)
 
 

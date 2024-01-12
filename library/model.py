@@ -52,28 +52,34 @@ class Model:
 
 
 class User(Model):
-    def __init__(self, username):
-        self.username = username
+    def __init__(self, id):
+        info = list(self.get_one("select * from user where id=%s", id))
+        self.id = info[0]
+        self.username = info[1]
+        self.password = info[2]
+        self.name = info[3]
+        self.phone = info[4]
+        self.email = info[5]
+        self.admin = info[6]
+        self.llt = info[7]
 
-    def login(self, password):
-        result = self.get_one(
-            "select * from user where username=%s and password=%s",
-            (self.username, password),
+    @staticmethod
+    def login(username, password):
+        model = Model()
+        result = model.get_one(
+            "select id from user where username=%s and password=%s",
+            (username, password),
         )
-        return result != None
+        if result is None:
+            return 0
+        else:
+            return result[0]
 
     def is_admin(self):
         result = self.get_one(
             "select * from user where username=%s and admin=1", self.username
         )
         return result != None
-
-    def name(self):
-        result = self.get_one("select name from user where username=%s", self.username)
-        if result[0] is None:
-            return self.username
-        else:
-            return result[0]
 
 
 class Icp(Model):
