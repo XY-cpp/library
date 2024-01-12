@@ -3,6 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded">
     <a class="navbar-brand" href="#">图书管理系统</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_example_1"
@@ -18,7 +19,7 @@
                 <a class="nav-link" href="#">图书查询</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">个人中心</a>
+                <a class="nav-link" href="/home/profile">个人中心</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -28,6 +29,57 @@
         </ul>
     </div>
 </nav>
+
+{% for icp,info,items in zip(icp_list,info_list,items_list) %}
+<div class="modal fade" id="{{ icp.isbn }}" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ icp.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>ICP信息</h5>
+                {% for title,value in info %}
+                <div class="input-group">
+                    <div class="input-group-prepend" style="width:20%">
+                        <input type="text" class="form-control readonly" style="caret-color: transparent"
+                            placeholder="{{ title }}">
+                    </div>
+                    <input type="text" class="form-control" placeholder="{{ value }}" disabled>
+                </div>
+                {% endfor %}
+
+                <br>
+                <h5>在馆信息</h5>
+                <div style="place-items: center;">
+                    <table class="table table-hover align-items-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">图书编号</th>
+                                <th scope="col">地点</th>
+                                <th scope="col">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr class="table-default" scope="row">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.location }}</td>
+                                <td>{{ item.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
 <div style="place-items: center;">
     <table class="table table-hover align-items-center">
         <thead>
@@ -39,45 +91,17 @@
             </tr>
         </thead>
         <tbody>
-            {% for icp,info in zip(icp_list,info_list) %}
+            {% for icp in icp_list %}
             <tr class="table-default" onclick="$('#{{ icp.isbn }}').modal('show')" scope="row">
                 <td>{{ icp.name }}</td>
                 <td>{{ icp.author }}</td>
                 <td>{{ icp.press }}</td>
                 <td>{{ icp.number }}</td>
-                <div class="modal fade" id="{{ icp.isbn }}" tabindex="-1" role="dialog" aria-labelledby="myModal"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">{{ icp.name }}</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                {% for title,value in info %}
-                                <div class="input-group">
-                                    <div class="input-group-prepend" style="width:20%">
-                                        <input type="text" class="form-control" placeholder="{{ title }}" disabled>
-                                    </div>
-                                    <input type="text" class="form-control" placeholder="{{ value }}" disabled>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
-
-
-    <div class="text-center">
-        {{ pagination.links }}
-    </div>
+    {{ pagination.links }}
 </div>
 
 {% endblock %}

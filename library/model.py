@@ -94,9 +94,10 @@ class Icp(Model):
         return model.get_one("select count(*) from icp")[0]
 
 
-class BookStatus(Model):
+class Item(Model):
     def __init__(self, id):
-        info = list(self.get_one("select * from book id=%s"), id)
+        # print(self.get_one("select * from item where id=%s", id))
+        info = list(self.get_one("select * from item where id=%s", id))
         self.id = info[0]
         self.isbn = info[1]
         self.location = info[2]
@@ -105,5 +106,5 @@ class BookStatus(Model):
     @staticmethod
     def get_id_by_isbn(isbn):
         model = Model()
-        info = list(model.get_all("select id from book where isbn=%s", isbn))
+        info = list(model.get_all("select id from item where isbn=%s", isbn))
         return [item[0] for item in info]

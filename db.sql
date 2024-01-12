@@ -71,21 +71,21 @@ values
   ("天才在左 疯子在右","高铭","武汉大学出版社","9787307075429","2010-2",5,1);
 
 -- 
--- 创建图书状态表
+-- 创建图书项表
 -- 
-drop table if exists `book`;
+drop table if exists `item`;
 
-create table `book`(
+create table `item`(
   `id` int auto_increment primary key,
   `isbn` char(128) not null,
-  `location` char(128) ,
+  `location` char(128),
   `status` tinyint not null default 0 comment '0未借出,1已预约,2已借出,3不外借'
 );
 
 -- 
--- 导入图书状态数据
+-- 导入图书项数据
 -- 
-insert into `book` (`isbn`)
+insert into `item` (`isbn`)
 with recursive t(n) as (
   select 1
   union all
