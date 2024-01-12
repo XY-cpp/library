@@ -62,3 +62,12 @@ def home_book():
         items_list=items_list,
         pagination=pagination,
     )
+
+
+@app.route("/home/profile")
+def home_profile():
+    username = session.get("user_id")
+    if username is None:
+        return redirect("/login?info=noid")
+    user = User(username)
+    return render_template("home/profile.html", user=user)

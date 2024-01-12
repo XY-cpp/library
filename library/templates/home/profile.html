@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded">
+    <a class="navbar-brand" href="#">图书管理系统</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_example_1"
+        aria-controls="navbar_example_1" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar_example_1">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home">主页</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/home/book">图书查询</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">个人中心</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link nav-link-icon" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="text-center container"
+    style="width:65%;margin-top:40px;padding-top:10px;background-color: #f5f5f5;border-radius:20px;">
+    <div class="h4">
+        <b>用户信息</b>
+    </div>
+    <p>账号: {{ user.username }}</p>
+    <p>姓名: {{ user.name }}</p>
+    <p>手机: {{ user.phone }}</p>
+    <p>邮件: {{ user.email }}</p>
+    <button type="button" class="btn btn-danger">挂失账户</button>
+    <button type="button" class="btn btn-primary">修改密码</button>
+    <br>
+    <br>
+</div>
+
+{% endblock %}
