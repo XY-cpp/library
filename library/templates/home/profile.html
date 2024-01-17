@@ -28,9 +28,8 @@
         </ul>
     </div>
 </nav>
-
 <div class="text-center container"
-    style="width:65%;margin-top:40px;padding-top:10px;background-color: #f5f5f5;border-radius:20px;">
+    style="width:65%;margin-top:20px;padding-top:10px;background-color: #f5f5f5;border-radius:20px;">
     <div class="h4">
         <b>用户信息</b>
     </div>
@@ -42,6 +41,42 @@
     <button type="button" class="btn btn-primary">修改密码</button>
     <br>
     <br>
+</div>
+
+<br>
+
+<div style="place-items: center;">
+    <table class="table table-hover align-items-center">
+        <thead>
+            <tr>
+                <th scope="col">图书编号</th>
+                <th scope="col">书名</th>
+                <th scope="col">作者</th>
+                <th scope="col">借阅日期</th>
+                <th scope="col">应还日期</th>
+                <th scope="col">归还日期</th>
+                <th scope="col">图书状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for borrow in borrow_list %}
+            <tr class="table-default" scope="row">
+                <td>{{ borrow.id }}</td>
+                <td>{{ borrow.name }}</td>
+                <td>{{ borrow.author }}</td>
+                <td>{{ borrow.start }}</td>
+                <td>{{ borrow.end_thred }}</td>
+                <td>{{ borrow.end }}</td>
+                {% if borrow.status == "已归还" %} <td>{{ borrow.status }}</td>
+                {% elif borrow.status == "已逾期" %} <td class="table-danger">{{ borrow.status }}</td>
+                {% elif borrow.status == "已借出" %} <td>{{ borrow.status }}</td>
+                {% elif borrow.status == "已预约" %} <td class="table-info">{{ borrow.status }}</td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 {% endblock %}

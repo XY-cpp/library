@@ -22,7 +22,7 @@ def auth_login():
     info = request.args.get("info", "")
     if request.method == "POST":
         user_id = User.login(request.form["username"], request.form["password"])
-        if user_id :
+        if user_id:
             session["user_id"] = user_id
             return redirect("/")
         else:

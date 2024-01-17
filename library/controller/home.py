@@ -1,7 +1,8 @@
 from library import app
-from library.model import User, Icp, Item
+from library.model import *
 from flask import render_template, session, redirect, request
 from flask_paginate import get_page_parameter, Pagination
+import datetime
 
 
 @app.route("/home")
@@ -10,7 +11,12 @@ def home_index():
     if user_id is None:
         return redirect("/login?info=noid")
     user = User(user_id)
-    return render_template("home/index.html", name=user.name)
+    borrowed_num = len(Borrow.borrow_id(user_id))
+    tle_num = len(Borrow.tle_id(user_id))
+    return render_template(
+        "home/index.html", name=user.name, borrowed_num=borrowed_num, tle_num=tle_num
+    )
+
 
 @app.route("/home/book")
 def home_book():
@@ -22,7 +28,7 @@ def home_book():
     pagination = Pagination(
         page=page,
         per_page=per_page,
-        total=Icp.total_books(),
+        total=Icp.total(),
         css_framework="bootstrap4",
         alignment="center",
     )
@@ -63,8 +69,9 @@ def home_book():
 
 @app.route("/home/profile")
 def home_profile():
-    username = session.get("user_id")
-    if username is None:
+    user_id = session.get("user_id")
+    if user_id is None:
         return redirect("/login?info=noid")
-    user = User(username)
-    return render_template("home/profile.html", user=user)
+    user = User(user_id)
+    borrow_list = Borrow.get_status(user_id)
+    return render_template("home/profile.html", user=user, borrow_list=borrow_list)

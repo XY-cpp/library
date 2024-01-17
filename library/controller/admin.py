@@ -3,6 +3,7 @@ from library.model import User, Icp, Item
 from flask import render_template, session, redirect, request
 from flask_paginate import get_page_parameter, Pagination
 
+
 @app.route("/admin")
 def admin():
     user_id = session.get("user_id")
@@ -11,25 +12,23 @@ def admin():
     user = User(user_id)
     return render_template("admin/index.html", name=user.name)
 
-@app.route("/admin/book", methods=["POST","GET"])
+
+@app.route("/admin/book", methods=["POST", "GET"])
 def admin_book():
     user_id = session.get("user_id")
     if user_id is None:
         return redirect("/login?info=noid")
-    
-    if request.method == "POST":
-        # print("保存修改后的信息。", request.form.to_dict())
-        mp = request.form.to_dict()
-        # print(mp)
-        Icp.update(mp)
 
+    if request.method == "POST":
+        mp = request.form.to_dict()
+        Icp.update(mp)
 
     page = request.args.get(get_page_parameter(), type=int, default=1)
     per_page = 10
     pagination = Pagination(
         page=page,
         per_page=per_page,
-        total=Icp.total_books(),
+        total=Icp.total(),
         css_framework="bootstrap4",
         alignment="center",
     )
@@ -50,7 +49,7 @@ def admin_book():
             ("ISBN", icp.isbn),
             ("出版日期", icp.press_time),
             ("经办人", icp.manger),
-            ("id", icp.id)
+            ("id", icp.id),
         ]
         info_list.append(info)
 
