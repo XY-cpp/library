@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded">
+    <a class="navbar-brand" href="#">图书管理系统</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_example_1"
+        aria-controls="navbar_example_1" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar_example_1">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href=/admin>主页</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">图书管理</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/profile">个人中心</a>
+                <!--
+                    这里要重新写一个 个人中心，或者直接干掉
+                -->
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link nav-link-icon" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% for icp,info,items in zip(icp_list,info_list,items_list) %}
+<div class="modal fade" id="{{ icp.isbn }}" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">{{ icp.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>ICP信息</h5>
+
+
+                <form id="form" method="post" action="/admin/book">
+                <!--记得改qwq-->
+                    {% for title,value in info[:-1] %}
+                    <!-- 不知道如何不输出 id，循环改成 info[:-1] 的话id传不回去-->
+                    <div class="input-group">
+                        <div class="input-group-prepend" style="width:20%">
+                            <input type="text" class="form-control readonly" style="caret-color: transparent"
+                                value="{{ title }}" readonly>
+                        </div>
+                        <div class="input-group-prepend" style="width:80%">
+                            {% if title == "ISBN"%}
+                            <input type="text" class="form-control" value="{{ value }}" name="{{ title }}" readonly>
+                            {% else %}
+                            <input type="text" class="form-control" value="{{ value }}" name="{{ title }}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                    <!-- 这里修改的后端没写-->
+                </form>
+
+                <br>
+                <h5>在馆信息</h5>
+                <div style="place-items: center;">
+                    <table class="table table-hover align-items-center">
+                        <thead>
+                            <tr>
+                                <th scope="col">图书编号</th>
+                                <th scope="col">地点</th>
+                                <th scope="col">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                            <tr class="table-default" scope="row">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.location }}</td>
+                                <td>{{ item.status }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<div style="place-items: center;">
+    <table class="table table-hover align-items-center">
+        <thead>
+            <tr>
+                <th scope="col">书名</th>
+                <th scope="col">作者</th>
+                <th scope="col">出版商</th>
+                <th scope="col">可借阅数</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for icp in icp_list %}
+            <tr class="table-default" onclick="$('#{{ icp.isbn }}').modal('show')" scope="row">
+                <td>{{ icp.name }}</td>
+                <td>{{ icp.author }}</td>
+                <td>{{ icp.press }}</td>
+                <td>{{ icp.number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pagination.links }}
+</div>
+
+{% endblock %}

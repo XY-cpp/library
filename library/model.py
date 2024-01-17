@@ -75,13 +75,6 @@ class User(Model):
         else:
             return result[0]
 
-    def is_admin(self):
-        result = self.get_one(
-            "select * from user where username=%s and admin=1", self.username
-        )
-        return result != None
-
-
 class Icp(Model):
     def __init__(self, id):
         info = list(self.get_one("select * from icp where id=%s", id))
@@ -98,6 +91,28 @@ class Icp(Model):
     def total_books():
         model = Model()
         return model.get_one("select count(*) from icp")[0]
+
+    def update(mp):
+        model = Model()
+        model.update(
+            "update icp \
+            set icp.name = %s, \
+                icp.author = %s, \
+                icp.press = %s,\
+                icp.isbn = %s,\
+                icp.press_time = %s, \
+                icp.manager = %s \
+            where icp.isbn=%s;",
+            (
+                mp["书名"],
+                mp["作者"],
+                mp["出版商"],
+                mp["ISBN"],
+                mp["出版日期"],
+                mp["经办人"],
+                mp["ISBN"],
+            ),
+        )
 
 
 class Item(Model):
