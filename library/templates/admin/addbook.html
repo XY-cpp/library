@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded">
+    <a class="navbar-brand" href="#">图书管理系统</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_example_1"
+        aria-controls="navbar_example_1" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar_example_1">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">主页</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/book">图书管理</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/borrow">借阅管理</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin/addbook">图书录入</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/profile">个人中心</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link nav-link-icon" href="/logout"><i class="fas fa-sign-out-alt"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="center-block" style="padding: 60px 50px;">
+    <h3 class="text-center">请输入需要录入的图书的信息</h3>
+    <div class="text-center">
+        注：如果已录入过该ISBN码，则书名，作者，出版商，出版日期可为空。
+    </div>
+</div>
+
+<div class="container" style="width:40%">
+
+    <form id="form" method="post" action="/admin/addbook">
+            {% for title in ["ISBN","书名","作者","出版商","出版日期","数目","地点"]%} 
+            <div class="input-group">
+                <div class="input-group-prepend" style="width:20%">
+                    <input type="text" class="form-control readonly" style="caret-color: transparent"
+                        value="{{ title }}" readonly>
+                </div>
+                <div class="input-group-prepend" style="width:80%">
+                    <input type="text" class="form-control" name="{{ title }}">
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="input-group-append">
+                <button type="submit" class="form-control btn btn-primary">提交</button>
+            </div>
+        
+    </form>
+
+</div>
+
+{% endblock %}

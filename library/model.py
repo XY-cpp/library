@@ -101,6 +101,23 @@ class Icp(Model):
         info = model.get_all("select id from icp")
         return [item[0] for item in info]
 
+
+    def find_by_isbn(isbn):
+        model = Model()
+        return model.get_one("select * from icp where icp.isbn = %s;",isbn)
+
+    def update_number(number, isbn):
+        model = Model()
+        model.update(
+            "update icp \
+            set icp.number = icp.number + %s\
+            where icp.isbn=%s;",
+            (
+                number,
+                isbn
+            ),
+        )
+
     def update(mp):
         model = Model()
         model.update(
@@ -121,6 +138,51 @@ class Icp(Model):
                 mp["经办人"],
                 mp["ISBN"],
             ),
+        )
+    def insert(mp):
+        model = Model()
+        model.update(
+            "insert into icp (name,author,press,isbn,press_time,number,manager)\
+            values(%s,%s,%s,%s,%s,0,%s);",
+            (
+                mp["书名"],
+                mp["作者"],
+                mp["出版商"],
+                mp["ISBN"],
+                mp["出版日期"],
+                mp["经办人"]
+            )
+        )
+    
+    def get_name_by_isbn(isbn):
+        model = Model()
+        info = list(model.get_all("select icp.name from icp where icp.isbn=%s", isbn))
+        return [item[0] for item in info]
+
+    def total_items():
+        model = Model()
+        return model.get_one("select count(*) from item")[0]
+
+    def update(mp):
+        model = Model()
+        model.update(
+            "update item \
+            set item.location = %s, \
+                item.status = %s  \
+            where item.id = %s ;",
+            (
+                mp["地点"],
+                mp["状态"],
+                mp["id"],
+            ),
+        )
+        # 还要对应的修改borrow list
+    
+    def add(isbn, location):
+        model = Model()
+        model.update(
+            "insert into item (isbn, location, status)\
+                values(%s,%s,0);", (isbn, location)
         )
 
 
@@ -154,6 +216,37 @@ class Item(Model):
         model = Model()
         info = list(model.get_all("select id from item where isbn=%s", isbn))
         return [item[0] for item in info]
+
+    def get_name_by_isbn(isbn):
+        model = Model()
+        info = list(model.get_all("select icp.name from icp where icp.isbn=%s", isbn))
+        return [item[0] for item in info]
+
+    def total_items():
+        model = Model()
+        return model.get_one("select count(*) from item")[0]
+
+    def update(mp):
+        model = Model()
+        model.update(
+            "update item \
+            set item.location = %s, \
+                item.status = %s  \
+            where item.id = %s ;",
+            (
+                mp["地点"],
+                mp["状态"],
+                mp["id"],
+            ),
+        )
+        # 还要对应的修改borrow list
+    
+    def add(isbn, location):
+        model = Model()
+        model.update(
+            "insert into item (isbn, location, status)\
+                values(%s,%s,0);", (isbn, location)
+        )
 
 
 class Borrow(Model):

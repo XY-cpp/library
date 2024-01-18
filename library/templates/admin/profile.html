@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded">
@@ -11,8 +11,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbar_example_1">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">主页</a>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin">主页</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/book">图书管理</a>
@@ -24,8 +24,8 @@
             <li class="nav-item">
                 <a class="nav-link" href="/admin/addbook">图书录入</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/admin/profile">个人中心</a>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">个人中心</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -35,10 +35,20 @@
         </ul>
     </div>
 </nav>
-<div class="center-block" style="padding: 200px 200px;">
-    <h3 class="text-center">读者{{name}}，你好！</h3>
-    <h3 class="text-center" style="margin-top:70px;">当前共有{<$bookNum>}本图书</h3>
-    <h3 class="text-center">你已借{<$borrowBookNum>}本书</h3>
-    <h3 class="text-center">已超期{<$outDateBook>}本书</h3>
+
+<div class="text-center container"
+    style="width:65%;margin-top:40px;padding-top:10px;background-color: #f5f5f5;border-radius:20px;">
+    <div class="h4">
+        <b>用户信息</b>
+    </div>
+    <p>账号: {{ user.username }}</p>
+    <p>姓名: {{ user.name }}</p>
+    <p>手机: {{ user.phone }}</p>
+    <p>邮件: {{ user.email }}</p>
+    <button type="button" class="btn btn-danger">挂失账户</button>
+    <button type="button" class="btn btn-primary">修改密码</button>
+    <br>
+    <br>
 </div>
+
 {% endblock %}
